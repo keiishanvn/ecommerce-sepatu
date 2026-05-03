@@ -38,10 +38,19 @@ $data = mysqli_query($conn, $query);
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg bg-white shadow-sm">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="index.php">Runora ga ORI </a>
-    <a href="tambah.php" class="btn btn-dark">
+    <a class="navbar-brand fw-bold" href="index.php">Runora ga ORI</a>
+
+    <div class="d-flex gap-2">
+      <a href="dashboard.php" class="btn btn-outline-dark btn-sm">
+        <i class="bi bi-bar-chart"></i>
+      </a>
+      <a href="about.php" class="btn btn-outline-secondary btn-sm">
+        About
+      </a>
+      <a href="tambah.php" class="btn btn-dark btn-sm">
         <i class="bi bi-plus"></i> Tambah
-    </a>
+      </a>
+    </div>
   </div>
 </nav>
 
@@ -78,48 +87,71 @@ $data = mysqli_query($conn, $query);
   </div>
 <?php endif; ?>
 
-<!-- PRODUK -->
+
+<!-- 🛍️ PRODUK -->
 <div class="container mt-4">
-    <div class="row g-4">
-        <?php if (mysqli_num_rows($data) > 0) : ?>
-            <?php while($row = mysqli_fetch_assoc($data)) : ?>
-            <div class="col-md-4 col-sm-6">
-                <div class="card shadow-sm h-100">
-                    <!-- Tambahkan default image jika gambar kosong -->
-                    <img src="assets/img/<?php echo $row['gambar']; ?>" 
-                         alt="<?php echo $row['nama']; ?>"
-                         onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'" 
-                         class="card-img-top">
-                    
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="fw-semibold text-capitalize"><?php echo htmlspecialchars($row['nama']); ?></h5>
-                        <p class="text-muted small flex-grow-1">
-                            <?php echo htmlspecialchars($row['deskripsi']); ?>
-                        </p>
-                        <p class="fw-bold text-dark fs-5">
-                            Rp <?php echo number_format($row['harga'], 0, ',', '.'); ?>
-                        </p>
-                        <div class="d-flex gap-2">
-                            <a href="edit.php?id=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm flex-grow-1 text-white">
-                                <i class="bi bi-pencil-square"></i> Edit
-                            </a>
-                            <a href="hapus.php?id=<?php echo $row['id']; ?>" 
-                               onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')"
-                               class="btn btn-danger btn-sm">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endwhile; ?>
-        <?php else : ?>
-            <div class="col-12 text-center py-5">
-                <i class="bi bi-box-seam display-1 text-muted"></i>
-                <p class="mt-3 text-muted">Produk tidak ditemukan.</p>
-            </div>
-        <?php endif; ?>
+<div class="row g-4">
+
+<?php if (mysqli_num_rows($data) > 0) : ?>
+<?php while($row = mysqli_fetch_assoc($data)) : ?>
+
+<div class="col-md-4 col-sm-6">
+  <div class="card shadow-sm h-100 position-relative">
+
+    <!-- 🔥 CLICKABLE AREA -->
+    <a href="detail.php?id=<?php echo $row['id']; ?>" class="text-decoration-none text-dark">
+
+      <img src="assets/img/<?php echo $row['gambar']; ?>" 
+           alt="<?php echo htmlspecialchars($row['nama']); ?>"
+           onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'" 
+           class="card-img-top">
+
+      <div class="card-body d-flex flex-column">
+
+        <h5 class="fw-semibold text-capitalize">
+          <?php echo htmlspecialchars($row['nama']); ?>
+        </h5>
+
+        <p class="text-muted small flex-grow-1">
+          <?php echo htmlspecialchars($row['deskripsi']); ?>
+        </p>
+
+        <p class="fw-bold text-success fs-5">
+          Rp <?php echo number_format($row['harga'], 0, ',', '.'); ?>
+        </p>
+
+      </div>
+
+    </a>
+
+    <!-- 🔧 ACTION BUTTONS -->
+    <div class="px-3 pb-3 d-flex gap-2">
+      <a href="edit.php?id=<?php echo $row['id']; ?>" 
+         class="btn btn-outline-warning btn-sm flex-grow-1">
+        <i class="bi bi-pencil"></i>
+      </a>
+
+      <a href="hapus.php?id=<?php echo $row['id']; ?>" 
+         onclick="return confirm('Yakin mau hapus produk ini?')"
+         class="btn btn-outline-danger btn-sm">
+        <i class="bi bi-trash"></i>
+      </a>
     </div>
+
+  </div>
+
+  <?php endwhile; ?>
+<?php else : ?>
+
+<div class="col-12 text-center py-5">
+  <i class="bi bi-search display-1 text-muted"></i>
+  <h5 class="mt-3 text-muted">Produk tidak ditemukan</h5>
+  <p class="text-muted small">Coba kata kunci lain ya 👀</p>
+</div>
+
+<?php endif; ?>
+
+</div>
 </div>
 
 <footer class="text-center mt-5 mb-4 text-muted">
